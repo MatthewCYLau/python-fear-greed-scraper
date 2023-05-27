@@ -4,12 +4,20 @@ A Python web scraper to scrapes the Fear and Greed index
 
 ## Run/build app locally
 
+- Run app on host machine:
+
 ```bash
 virtualenv -p /usr/bin/python3 venv
 source venv/bin/activate
 pip3 install -r requirements.txt 
 python3 manage.py 
 deactivate 
+```
+
+- Run app as container:
+
+```bash
+docker compose up --build
 ```
 
 ### Install new packages
