@@ -2,7 +2,7 @@
 
 A Python web scraper which scrapes the Fear and Greed index
 
-![cicd cloud run workflow](https://github.com/MatthewCYLau/python-fear-greed-scraper/actions/workflows/cicd-cloud-run.yml/badge.svg)
+![cicd cloud run workflow](https://github.com/MatthewCYLau/python-fear-greed-scraper/actions/workflows/cicd-cloud-run.yaml/badge.svg)
 ## Run/build app locally
 
 - Run app on host machine:
