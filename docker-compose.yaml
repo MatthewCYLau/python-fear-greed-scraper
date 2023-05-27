@@ -3,3 +3,5 @@ version: "3.8"
 services:
   python-fear-greed-scraper:
     build: .
+    image: python-fear-greed-scraper
+    container_name: python-fear-greed-scraper

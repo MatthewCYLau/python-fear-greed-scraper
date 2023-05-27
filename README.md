@@ -1,6 +1,6 @@
 # Python Fear and Greed Scraper
 
-A Python web scraper to scrapes the Fear and Greed index
+A Python web scraper which scrapes the Fear and Greed index
 
 ## Run/build app locally
 
