@@ -1,19 +1,18 @@
-FROM python:3.10-slim as build
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends \
-	      build-essential gcc 
+FROM python:3.11-alpine
 
-WORKDIR /usr/app
-RUN python -m venv /usr/app/venv
-ENV PATH="/usr/app/venv/bin:$PATH"
+# update apk repo
+RUN echo "http://dl-4.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories && \
+    echo "http://dl-4.alpinelinux.org/alpine/v3.14/community" >> /etc/apk/repositories
+
+# install chromedriver
+RUN apk update
+RUN apk add chromium chromium-chromedriver
+
+# upgrade pip
+RUN pip install --upgrade pip
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-FROM python:3.10-slim
-WORKDIR /usr/app/venv
-COPY --from=build /usr/app/venv ./venv
 COPY . .
-
-ENV PATH="/usr/app/venv/bin:$PATH"
 CMD [ "python", "manage.py" ]
