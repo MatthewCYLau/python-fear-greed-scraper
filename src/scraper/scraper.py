@@ -1,7 +1,10 @@
 import logging
+import time
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class Scraper():
     def __init__ (self):
@@ -12,13 +15,17 @@ class Scraper():
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument("--window-size=1920,1080")
         self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver.implicitly_wait(10);        
-    
+        self.driver.implicitly_wait(10); 
+
     def start_scraper(self):
         logging.info('Start scraping...')
         try:
-            self.driver.get('https://www.oursky.com/')
-            el = self.driver.find_element(By.ID, 'heroTag')
-            print(el.text)
+            self.driver.get('https://edition.cnn.com/markets/fear-and-greed')
+            element_present = EC.visibility_of_any_elements_located((By.CLASS_NAME, 'market-fng-gauge__dial-number-value'))
+            WebDriverWait(self.driver, 5).until(element_present)
+            time.sleep(5)
+            el = self.driver.find_element(By.CLASS_NAME, 'market-fng-gauge__dial-number-value')
+            index = el.text
+            logging.info('Fear and greed index is: %s', index)
         except NoSuchElementException as ex:
             self.fail(ex.msg)
