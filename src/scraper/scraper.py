@@ -1,7 +1,7 @@
 import logging
 import time
 from selenium import webdriver
-from email.email import send_email
+from src.email.email import send_email
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
