@@ -65,8 +65,10 @@ jobs:
           res=$(gcloud run jobs describe $CLOUD_RUN_JOB --region=europe-west1 || echo "NOT_EXIST")
           if [ "$res" = "NOT_EXIST" ]; then
             echo "Creating Cloud Run job..."
-            gcloud run jobs create ${CLOUD_RUN_JOB} --image "$REGISTRY_HOSTNAME/$PROJECT_ID/$IMAGE:$GITHUB_SHA" --region europe-west1
+            gcloud run jobs create ${CLOUD_RUN_JOB} --image "$REGISTRY_HOSTNAME/$PROJECT_ID/$IMAGE:$GITHUB_SHA" --region europe-west1 \
+            --update-secrets=SENDGRID_API_KEY=python-fear-greed-sendgrid-api-key:latest
           else
             echo "Updating Cloud Run job..."
-            gcloud run jobs update ${CLOUD_RUN_JOB} --image "$REGISTRY_HOSTNAME/$PROJECT_ID/$IMAGE:$GITHUB_SHA" --region europe-west1
+            gcloud run jobs update ${CLOUD_RUN_JOB} --image "$REGISTRY_HOSTNAME/$PROJECT_ID/$IMAGE:$GITHUB_SHA" --region europe-west1 \
+            --update-secrets=SENDGRID_API_KEY=python-fear-greed-sendgrid-api-key:latest
           fi
