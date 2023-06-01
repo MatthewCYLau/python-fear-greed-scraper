@@ -28,6 +28,13 @@ class Scraper():
             el = self.driver.find_element(By.CLASS_NAME, 'market-fng-gauge__dial-number-value')
             index = el.text
             logging.info('Fear and greed index is: %s', index)
-            send_email(index)
+            if (self.should_send_email(int(index))):
+                send_email(index)
+            else:
+                logging.info('Fear and greed index is above threshold')
         except NoSuchElementException as ex:
             self.fail(ex.msg)
+    
+    @staticmethod
+    def should_send_email(index: int) -> bool:
+        return index < 35
