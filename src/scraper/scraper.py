@@ -2,6 +2,7 @@ import logging
 import time
 from selenium import webdriver
 from src.email.email import send_email
+from src.record.models import Record
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -28,6 +29,8 @@ class Scraper():
             el = self.driver.find_element(By.CLASS_NAME, 'market-fng-gauge__dial-number-value')
             index = el.text
             logging.info('Fear and greed index is: %s', index)
+            record = Record(index=index)
+            record.save_to_database()
             if (self.should_send_email(int(index))):
                 send_email(index)
             else:

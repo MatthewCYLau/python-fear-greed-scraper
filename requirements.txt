@@ -24,3 +24,4 @@ trio==0.22.0
 trio-websocket==0.10.2
 urllib3==1.26.16
 wsproto==1.2.0
+pytz==2023.3
