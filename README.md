@@ -7,6 +7,7 @@ A Python web scraper which scrapes the Fear and Greed index
 The list of repositories are as follow:
 
 - Python Flask API repository [here](https://github.com/MatthewCYLau/python-fear-greed-api)
+- React with Vite client repository [here](https://github.com/MatthewCYLau/python-fear-greed-client)
 - Scraper and GCP infrastructure repository [here](https://github.com/MatthewCYLau/python-fear-greed-scraper)
 
 ## Run/build app locally
@@ -16,9 +17,9 @@ The list of repositories are as follow:
 ```bash
 virtualenv -p /usr/bin/python3 venv
 source venv/bin/activate
-pip3 install -r requirements.txt 
-python3 manage.py 
-deactivate 
+pip3 install -r requirements.txt
+python3 manage.py
+deactivate
 ```
 
 - Run app as container:
@@ -30,7 +31,7 @@ docker compose up --build
 ### Install new packages
 
 ```bash
-pip3 install boto 
+pip3 install boto
 pip3 freeze > requirements.txt
 ```
 
