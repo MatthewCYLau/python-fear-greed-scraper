@@ -38,8 +38,10 @@ class Scraper:
             logging.info("Fear and greed index is: %s", index)
             record = Record(index=index)
             record.save_to_database()
-            alerts = self.get_alerts_equal_or_greater_than_current_index(int(index))
-            emails = [i["created_by"]["email"] for i in alerts]
+            triggered_alerts = self.get_alerts_equal_or_greater_than_current_index(
+                int(index)
+            )
+            emails = [i["created_by"]["email"] for i in triggered_alerts]
             [send_email(i, index) for i in emails]
             logging.info("Email notification sent to %s emails", len(emails))
         except NoSuchElementException as ex:

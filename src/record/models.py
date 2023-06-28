@@ -5,12 +5,12 @@ from src.db.setup import db
 
 GB = pytz.timezone("Europe/London")
 
-class Record():
+
+class Record:
     def __init__(self, index):
         self.index = index
-        self.creatd = datetime.now(timezone.utc).astimezone(GB).isoformat()
-
+        self.created = datetime.now(timezone.utc).astimezone(GB).isoformat()
 
     def save_to_database(self):
-        db['records'].insert_one(vars(self))
+        db["records"].insert_one(vars(self))
         logging.info(f"Saved record to database - {self.index}")
