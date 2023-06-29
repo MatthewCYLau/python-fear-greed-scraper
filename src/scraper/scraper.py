@@ -5,6 +5,7 @@ from bson.objectid import ObjectId
 from src.email.email import send_email
 from src.db.setup import db
 from src.record.models import Record
+from src.event.models import Event
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -41,6 +42,7 @@ class Scraper:
             triggered_alerts = self.get_alerts_equal_or_greater_than_current_index(
                 int(index)
             )
+            [self.create_event(i) for i in triggered_alerts]
             emails = [i["created_by"]["email"] for i in triggered_alerts]
             [send_email(i, index) for i in emails]
             logging.info("Email notification sent to %s emails", len(emails))
@@ -60,3 +62,8 @@ class Scraper:
                     {"_id": ObjectId(alert["created_by"])}, {"password": False}
                 )
         return alerts
+
+    @staticmethod
+    def create_event(alert):
+        event = Event(alert["index"], alert_id=alert["_id"])
+        event.save_to_database()
