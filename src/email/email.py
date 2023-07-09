@@ -4,12 +4,12 @@ import logging
 from sendgrid.helpers.mail import Mail, Email, To, Content
 
 
-def send_email(to_email: str = "", index: int = 0):
+def send_email(to_email: str = "", message: str = ""):
     sg = sendgrid.SendGridAPIClient(api_key=os.environ.get("SENDGRID_API_KEY"))
     from_email = Email("lau.cy.matthew@gmail.com")
     to_email = To(to_email)
     subject = "Python Fear and Greed Index notification"
-    content = Content("text/plain", "Fear and greed index is: {}".format(index))
+    content = Content("text/plain", message)
     mail = Mail(from_email, to_email, subject, content)
 
     mail_json = mail.get()

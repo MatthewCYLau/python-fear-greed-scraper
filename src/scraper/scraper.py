@@ -43,9 +43,7 @@ class Scraper:
                 int(index)
             )
             [self.create_event(i) for i in triggered_alerts]
-            emails = [i["created_by"]["email"] for i in triggered_alerts]
-            [send_email(i, index) for i in emails]
-            logging.info("Email notification sent to %s emails", len(emails))
+            [self.generate_email(i, index) for i in triggered_alerts]
         except NoSuchElementException as ex:
             self.fail(ex.msg)
 
@@ -67,3 +65,14 @@ class Scraper:
     def create_event(alert):
         event = Event(alert["index"], alert_id=alert["_id"])
         event.save_to_database()
+
+    @staticmethod
+    def generate_email(alerts, index):
+        emails_sent_count = 0
+        for i in alerts:
+            to_email_address = i["created_by"]["email"]
+            note = i["note"]
+            message = f"Fear and greed index is: {index}\n{note}"
+            send_email(to_email_address, message)
+            emails_sent_count += 1
+        logging.info("Email notification sent to %s emails", emails_sent_count)
