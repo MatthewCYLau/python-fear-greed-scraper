@@ -43,7 +43,7 @@ class Scraper:
                 int(index)
             )
             [self.create_event(i) for i in triggered_alerts]
-            [self.generate_email(i, index) for i in triggered_alerts]
+            self.generate_emails(triggered_alerts, index)
         except NoSuchElementException as ex:
             self.fail(ex.msg)
 
@@ -67,7 +67,7 @@ class Scraper:
         event.save_to_database()
 
     @staticmethod
-    def generate_email(alerts, index):
+    def generate_emails(alerts, index):
         emails_sent_count = 0
         for i in alerts:
             to_email_address = i["created_by"]["email"]
