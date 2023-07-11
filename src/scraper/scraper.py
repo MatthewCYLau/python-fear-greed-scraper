@@ -38,7 +38,9 @@ class Scraper:
             index = el.text
             logging.info("Fear and greed index is: %s", index)
             record = Record(index=index)
-            record.save_to_database()
+            if not Record.check_if_record_already_created_for_today():
+                logging.info("Saving record for index: %s", index)
+                record.save_to_database()
             triggered_alerts = self.get_alerts_equal_or_greater_than_current_index(
                 int(index)
             )
