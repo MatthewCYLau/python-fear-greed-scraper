@@ -14,6 +14,9 @@ resource "google_service_account" "cloud_run_runtime" {
   display_name = "Service Account for ${var.cloud-run-job-name} Cloud Run runtime"
 }
 
+/* Use google_storage_bucket_iam_policy over google_project_iam_member */
+
+/*
 resource "google_project_iam_member" "cloud_run_runtime" {
   project = var.project
   role    = "roles/storage.admin"
@@ -24,3 +27,4 @@ resource "google_project_iam_member" "cloud_run_runtime" {
     expression  = "resource.name == '${google_storage_bucket.assets.name}'"
   }
 }
+*/
