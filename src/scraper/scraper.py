@@ -1,5 +1,6 @@
 import logging
 import time
+import datetime
 from selenium import webdriver
 from bson.objectid import ObjectId
 from src.email.email import send_email
@@ -38,9 +39,12 @@ class Scraper:
             index = el.text
             logging.info("Fear and greed index is: %s", index)
             record = Record(index=index)
-            if not Record.check_if_record_already_created_for_today():
-                logging.info("Saving record for index: %s", index)
-                record.save_to_database()
+            if self.is_sunday_or_monday:
+                logging.info("Skip saving record for Sunday or Monday")
+            else:
+                if not Record.is_record_already_created_for_today():
+                    logging.info("Saving record for index: %s", index)
+                    record.save_to_database()
             triggered_alerts = self.get_alerts_equal_or_greater_than_current_index(
                 int(index)
             )
@@ -67,6 +71,10 @@ class Scraper:
     def create_event(alert):
         event = Event(alert["index"], alert_id=alert["_id"])
         event.save_to_database()
+
+    @staticmethod
+    def is_sunday_or_monday():
+        return datetime.datetime.today().weekday() in [0, 6]
 
     @staticmethod
     def generate_emails(alerts, index):

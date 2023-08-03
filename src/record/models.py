@@ -16,7 +16,7 @@ class Record:
         logging.info(f"Saved record to database - {self.index}")
 
     @staticmethod
-    def check_if_record_already_created_for_today():
+    def is_record_already_created_for_today():
         previous_records = list(
             db["records"].find(
                 {"created": {"$gte": datetime.today().strftime("%Y-%m-%d")}}
