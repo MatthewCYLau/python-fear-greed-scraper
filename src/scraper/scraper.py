@@ -31,7 +31,7 @@ class Scraper:
             element_present = EC.visibility_of_any_elements_located(
                 (By.CLASS_NAME, "market-fng-gauge__dial-number-value")
             )
-            WebDriverWait(self.driver, 5).until(element_present)
+            WebDriverWait(self.driver, 10).until(element_present)
             time.sleep(5)
             el = self.driver.find_element(
                 By.CLASS_NAME, "market-fng-gauge__dial-number-value"
@@ -39,7 +39,7 @@ class Scraper:
             index = el.text
             logging.info("Fear and greed index is: %s", index)
             record = Record(index=index)
-            if self.is_sunday_or_monday:
+            if self.is_sunday_or_monday():
                 logging.info("Skip saving record for Sunday or Monday")
             else:
                 if not Record.is_record_already_created_for_today():
