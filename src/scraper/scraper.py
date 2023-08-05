@@ -26,16 +26,16 @@ class Scraper:
 
     def start_scraper(self):
         logging.info("Start scraping...")
+        class_name = "market-fng-gauge__dial-number-value"
+        FEAR_GREED_URL = "https://edition.cnn.com/markets/fear-and-greed"
         try:
-            self.driver.get("https://edition.cnn.com/markets/fear-and-greed")
+            self.driver.get(FEAR_GREED_URL)
             element_present = EC.visibility_of_any_elements_located(
-                (By.CLASS_NAME, "market-fng-gauge__dial-number-value")
+                (By.CLASS_NAME, class_name)
             )
             WebDriverWait(self.driver, 10).until(element_present)
             time.sleep(5)
-            el = self.driver.find_element(
-                By.CLASS_NAME, "market-fng-gauge__dial-number-value"
-            )
+            el = self.driver.find_element(By.CLASS_NAME, class_name)
             index = el.text
             logging.info("Fear and greed index is: %s", index)
             record = Record(index=index)
