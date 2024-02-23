@@ -14,6 +14,18 @@ resource "google_service_account" "cloud_run_runtime" {
   display_name = "Service Account for ${var.cloud-run-job-name} Cloud Run runtime"
 }
 
+resource "google_project_iam_member" "analysis_job_pubsub_subscribe" {
+  project = var.project
+  role    = "roles/pubsub.subscriber"
+  member  = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
+}
+
+resource "google_project_iam_member" "analysis_job_pubsub_publish" {
+  project = var.project
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
+}
+
 /* Use google_storage_bucket_iam_policy over google_project_iam_member */
 
 /*
