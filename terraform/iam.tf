@@ -1,6 +1,6 @@
 resource "google_service_account" "cloud_run_invoker" {
   account_id   = "python-scraper-cr-invoker"
-  display_name = "Service Account for ${var.cloud-run-job-name} Cloud Run invoker"
+  display_name = "Service Account for ${var.cloud-run-job-name} Cloud Run scraper invoker"
 }
 
 resource "google_project_iam_member" "cloud_run_invoker" {
@@ -11,7 +11,7 @@ resource "google_project_iam_member" "cloud_run_invoker" {
 
 resource "google_service_account" "cloud_run_runtime" {
   account_id   = "python-scraper-cr-runtime"
-  display_name = "Service Account for ${var.cloud-run-job-name} Cloud Run runtime"
+  display_name = "Service Account for ${var.cloud-run-job-name} Cloud Run API runtime"
 }
 
 resource "google_project_iam_member" "analysis_job_pubsub_subscribe" {
@@ -24,6 +24,29 @@ resource "google_project_iam_member" "analysis_job_pubsub_publish" {
   project = var.project
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
+}
+
+resource "google_service_account" "pubsub_invoker" {
+  account_id   = "python-api-pubsub-invoker"
+  display_name = "Service Account for ${var.cloud-run-job-name} Cloud Run Pub/Sub Invoker"
+}
+
+resource "google_project_iam_member" "pubsub_invoker" {
+  project = var.project
+  role    = "roles/run.invoker"
+  member  = "serviceAccount:${google_service_account.pubsub_invoker.email}"
+}
+
+resource "google_project_service_identity" "pubsub_agent" {
+  provider = google-beta
+  project  = var.project
+  service  = "pubsub.googleapis.com"
+}
+
+resource "google_project_iam_binding" "project_token_creator" {
+  project = var.project
+  role    = "roles/iam.serviceAccountTokenCreator"
+  members = ["serviceAccount:${google_project_service_identity.pubsub_agent.email}"]
 }
 
 /* Use google_storage_bucket_iam_policy over google_project_iam_member */

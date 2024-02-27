@@ -11,7 +11,16 @@ resource "google_pubsub_subscription" "analysis_jobs" {
   name                 = "analysis-jobs-subscription"
   topic                = google_pubsub_topic.analysis_jobs.name
   ack_deadline_seconds = 20
-  labels               = local.labels
+  push_config {
+    push_endpoint = data.google_cloud_run_v2_service.api.uri
+    oidc_token {
+      service_account_email = google_service_account.pubsub_invoker.email
+    }
+    attributes = {
+      x-goog-version = "v1"
+    }
+  }
+  labels = local.labels
 }
 
 resource "google_pubsub_schema" "analysis_job" {
