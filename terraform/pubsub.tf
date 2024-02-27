@@ -12,7 +12,7 @@ resource "google_pubsub_subscription" "analysis_jobs" {
   topic                = google_pubsub_topic.analysis_jobs.name
   ack_deadline_seconds = 20
   push_config {
-    push_endpoint = data.google_cloud_run_v2_service.api.uri
+    push_endpoint = "${data.google_cloud_run_v2_service.api.uri}/api/subscription-push"
     oidc_token {
       service_account_email = google_service_account.pubsub_invoker.email
     }
