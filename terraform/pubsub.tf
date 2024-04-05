@@ -8,9 +8,12 @@ resource "google_pubsub_topic" "analysis_jobs" {
 }
 
 resource "google_pubsub_subscription" "analysis_jobs" {
-  name                 = "analysis-jobs-subscription"
-  topic                = google_pubsub_topic.analysis_jobs.name
-  ack_deadline_seconds = 20
+  name                       = "analysis-jobs-subscription"
+  topic                      = google_pubsub_topic.analysis_jobs.name
+  ack_deadline_seconds       = 20
+  message_retention_duration = "1200s" # 20 minutes
+  retain_acked_messages      = true
+
   push_config {
     push_endpoint = "${data.google_cloud_run_v2_service.api.uri}/api/subscription-push"
     oidc_token {
