@@ -87,6 +87,9 @@ class Scraper:
     def generate_emails(alerts, index):
         emails_sent_count = 0
         for i in alerts:
+            if not isinstance(i["created_by"], dict):
+                logging.warn("Alert does not contain user email")
+                continue
             to_email_address = i["created_by"]["email"]
             note = i["note"]
             message = f"Fear and greed index is: {index}\n{note}"
