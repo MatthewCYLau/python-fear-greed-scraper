@@ -10,6 +10,7 @@ class Event:
     def __init__(self, index, alert_id):
         self.index = index
         self.alert_id = alert_id
+        self.acknowledged = False
         self.created = datetime.now(timezone.utc).astimezone(GB).isoformat()
 
     def save_to_database(self):
