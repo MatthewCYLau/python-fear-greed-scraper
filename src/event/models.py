@@ -11,7 +11,9 @@ class Event:
         self.index = index
         self.alert_id = alert_id
         self.acknowledged = False
-        self.created = datetime.now(timezone.utc).astimezone(GB).isoformat()
+        self.created = datetime.fromisoformat(
+            datetime.now(timezone.utc).astimezone(GB).isoformat()
+        )
 
     def save_to_database(self):
         db["events"].insert_one(vars(self))
