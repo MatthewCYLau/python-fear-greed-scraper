@@ -1,9 +1,6 @@
-import pytz
 from datetime import datetime, timezone
 from src.db.setup import db
 import logging
-
-GB = pytz.timezone("Europe/London")
 
 
 class Event:
@@ -11,9 +8,7 @@ class Event:
         self.index = index
         self.alert_id = alert_id
         self.acknowledged = False
-        self.created = datetime.fromisoformat(
-            datetime.now(timezone.utc).astimezone(GB).isoformat()
-        )
+        self.created = datetime.now(tz=timezone.utc)
 
     def save_to_database(self):
         db["events"].insert_one(vars(self))
