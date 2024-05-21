@@ -39,6 +39,16 @@ resource "google_pubsub_schema" "analysis_job" {
         "default" : ""
       },
       {
+        "name" : "TargetFearGreedIndex",
+        "type" : "int",
+        "default" : 0
+      },
+      {
+        "name" : "TargetPeRatio",
+        "type" : "float",
+        "default" : 0
+      },
+      {
         "name" : "JobId",
         "type" : "string",
         "default" : ""
