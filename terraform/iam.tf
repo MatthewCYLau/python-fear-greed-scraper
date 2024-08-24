@@ -18,12 +18,18 @@ resource "google_project_iam_member" "analysis_job_pubsub_subscribe" {
   project = var.project
   role    = "roles/pubsub.subscriber"
   member  = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
+  condition {
+    title       = "resource_name_equals_analysis_jobs_sucscription"
+    description = "Resource name equals ${google_pubsub_subscription.analysis_jobs.name}"
+    expression  = "resource.name == 'projects/${var.project}/subscriptions/${google_pubsub_subscription.analysis_jobs.name}'"
+  }
 }
 
 resource "google_project_iam_member" "analysis_job_pubsub_publish" {
   project = var.project
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
+
 }
 
 resource "google_service_account" "pubsub_invoker" {
