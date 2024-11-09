@@ -1,4 +1,5 @@
 async-generator==1.10
+argh==0.31.3
 attrs==23.1.0
 certifi==2023.5.7
 dnspython==2.3.0
