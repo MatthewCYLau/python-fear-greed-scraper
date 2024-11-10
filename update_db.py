@@ -16,12 +16,12 @@ def insert_record(date, index):
     logging.info(f"Saved record to database.")
 
 
-def generate_df():
+def generate_df(csv_file_path: str | None = ""):
     date_cols = [
         "Date",
     ]
     return pd.read_csv(
-        "./data/data.csv",
+        csv_file_path,
         sep="\t",
         header=0,
         parse_dates=date_cols,
@@ -33,8 +33,14 @@ def generate_df():
 @arg("--copy", default="")
 def update_db(count, copy: str = ""):
     logging.info(f"Updating database with {count} CSV data {copy}...")
-    df = generate_df()
-    [insert_record(x, y) for x, y in zip(df["Date"], df["Index"])]
+    df_1 = generate_df("./data/data.csv")
+    [insert_record(x, y) for x, y in zip(df_1["Date"], df_1["Index"])]
+
+    # merge second dataframe from CSV
+    df_2 = generate_df("./data/data2.csv")
+    merged_df = pd.merge(df_1, df_2, on="Date", how="inner")
+    merged_df = merged_df.set_index("Date")
+    print(merged_df)
 
 
 if __name__ == "__main__":
