@@ -35,6 +35,12 @@ pip3 install boto
 pip3 freeze > requirements.txt
 ```
 
+### Command line tool
+
+```
+python3 df_playground.py generate-df 20 --int-only
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
