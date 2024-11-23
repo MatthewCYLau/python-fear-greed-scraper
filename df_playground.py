@@ -9,8 +9,8 @@ import seaborn as sns
 
 @arg("days")
 @arg("--int-only", default=False)
-@arg("--plot", default=False)
-def generate_df(days: int, int_only: bool = False, plot: bool = False):
+@arg("--chart-type", default="")
+def generate_df(days: int, int_only: bool = False, chart_type: str = ""):
 
     days = int(days)
     dates = pd.date_range(
@@ -23,18 +23,28 @@ def generate_df(days: int, int_only: bool = False, plot: bool = False):
     df = pd.DataFrame({"Date": dates, "Value": values})
     print(df)
 
-    if plot:
+    if chart_type:
         plt.figure(figsize=(10, 6))
+        if chart_type == "scatter":
 
-        # Scatter plot
-        sns.scatterplot(x=df["Date"], y=df["Value"], color="blue", label="Data Points")
+            # Scatter plot
+            sns.scatterplot(
+                x=df["Date"], y=df["Value"], color="blue", label="Data Points"
+            )
 
-        # Set titles and labels
-        plt.title("Scatter Plot with Trend Line", fontsize=14)
-        plt.xlabel("Date", fontsize=12)
-        plt.ylabel("Value", fontsize=12)
+            # Set titles and labels
+            plt.title("Scatter Plot with Trend Line", fontsize=14)
+            plt.xlabel("Date", fontsize=12)
+            plt.ylabel("Value", fontsize=12)
 
-        # Show the plot
+        elif chart_type == "histogram":
+            plt.hist(df["Value"], bins=4)
+            plt.title("Histogram", fontsize=14)
+            plt.ylabel("Count", fontsize=12)
+
+        else:
+            print(f"Invalid chart type: {chart_type}")
+            return
         plt.legend()
         plt.show()
 
