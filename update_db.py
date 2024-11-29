@@ -17,16 +17,25 @@ def insert_record(date, index):
 
 
 def generate_df(csv_file_path: str | None = ""):
-    date_cols = [
-        "Date",
-    ]
-    return pd.read_csv(
+    df = pd.read_csv(
         csv_file_path,
-        sep="\t",
+        sep="\t",  # tab as separator
         header=0,
-        parse_dates=date_cols,
-        dayfirst=True,
     )
+    df["Date"] = pd.to_datetime(
+        df["Date"], format="%d/%m/%Y"
+    )  # Adjust the format as needed
+    return df
+    # date_cols = [
+    #     "Date",
+    # ]
+    # return pd.read_csv(
+    #     csv_file_path,
+    #     sep="\t",
+    #     header=0,
+    #     parse_dates=date_cols,
+    #     dayfirst=True,
+    # )
 
 
 @arg("count")
