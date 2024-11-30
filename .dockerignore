@@ -3,3 +3,4 @@ venv
 .git
 .pytest_cache
 terraform
+scripts
