@@ -23,6 +23,17 @@ def plot_stocks_charts(stocks: str = "", cumulative_returns: bool = False):
         y_label = "Cumulative " + y_label
     else:
         data.plot(figsize=(10, 7))
+
+    # Set the target price
+    target_price = 600
+    # Plot the target price as a horizontal line
+    plt.axhline(
+        y=target_price,
+        color="r",
+        linestyle="--",
+        label=f"Target Price: ${target_price}",
+    )
+
     plt.legend()
     plt.title("Stock Charts Plot", fontsize=16)
 
@@ -32,6 +43,7 @@ def plot_stocks_charts(stocks: str = "", cumulative_returns: bool = False):
 
     # Plot the grid lines
     plt.grid(which="major", color="k", linestyle="-.", linewidth=0.5)
+
     plt.show()
 
 
