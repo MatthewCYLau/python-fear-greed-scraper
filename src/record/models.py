@@ -28,5 +28,5 @@ class Record:
             )
             return True
         else:
-            logging.info("No record found for today's date")
+            logging.info("No record found for today's date.")
             return False
