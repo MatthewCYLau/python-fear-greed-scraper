@@ -69,3 +69,14 @@ resource "google_project_iam_member" "cloud_run_runtime" {
   }
 }
 */
+
+resource "google_project_iam_member" "github_action_sa" {
+  project = var.project
+  role    = "roles/storage.admin"
+  member  = "serviceAccount:github-actions-service-account@open-source-apps-001.iam.gserviceaccount.com"
+  condition {
+    title       = "resource_name_equals_assets"
+    description = "Resource name equals assets storage buckets"
+    expression  = "resource.name == '${google_storage_bucket.assets_uploads.name}' || resource.name == '${google_storage_bucket.assets_plots.name}'"
+  }
+}
