@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "src/**"
 
 env:
   PROJECT_ID: open-source-apps-001
