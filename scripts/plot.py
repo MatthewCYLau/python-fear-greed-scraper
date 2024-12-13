@@ -3,6 +3,7 @@ from dateutil.relativedelta import relativedelta
 from argh import ArghParser, arg
 import matplotlib.pyplot as plt
 import yfinance as yf
+from sklearn.linear_model import LinearRegression
 
 
 @arg("--stocks", default="")
@@ -25,7 +26,7 @@ def plot_stocks_charts(stocks: str = "", cumulative_returns: bool = False):
         data.plot(figsize=(10, 7))
 
     # Set the target price
-    target_price = 600
+    target_price = 250
     # Plot the target price as a horizontal line
     plt.axhline(
         y=target_price,
@@ -33,6 +34,16 @@ def plot_stocks_charts(stocks: str = "", cumulative_returns: bool = False):
         linestyle="--",
         label=f"Target Price: ${target_price}",
     )
+
+    if len(tickers_list) == 1:
+        x = data.index
+        y = data.values.reshape(-1, 1)
+
+        lm = LinearRegression()
+        lm.fit(x.values.reshape(-1, 1), y)
+
+        predictions = lm.predict(x.values.astype(float).reshape(-1, 1))
+        plt.plot(x, predictions, label="Linear fit", lw=3, color="red")
 
     plt.legend()
     plt.title("Stock Charts Plot", fontsize=16)
