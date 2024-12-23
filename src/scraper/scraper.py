@@ -88,7 +88,7 @@ class Scraper:
         emails_sent_count = 0
         for i in alerts:
             if not isinstance(i["created_by"], dict):
-                logging.warn("Alert does not contain user email")
+                logging.warning("Alert does not contain user email")
                 continue
             to_email_address = i["created_by"]["email"]
             note = i["note"]
