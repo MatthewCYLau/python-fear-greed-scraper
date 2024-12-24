@@ -93,7 +93,7 @@ class Scraper:
             to_email_address = i["created_by"]["email"]
             note = i["note"]
             increase_amount = i["created_by"]["regularContributionAmount"] * (
-                1 + (index - i["index"] / 100)
+                1 + (int(index) - i["index"] / 100)
             )
             increased_contribution = f"{increase_amount:.2f}"
             message = f"Fear and greed index is: {index}\n{note}\nIncrease contribution by {increased_contribution}"
