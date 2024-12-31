@@ -48,9 +48,7 @@ class Scraper:
                 if not Record.is_record_already_created_for_today():
                     logging.info("Saving record for index: %s", index)
                     record.save_to_database()
-            triggered_alerts = self.get_alerts_equal_or_greater_than_current_index(
-                int(index)
-            )
+            triggered_alerts = self.get_alerts_for_notification(int(index))
             [self.create_event(i) for i in triggered_alerts]
             self.generate_emails(triggered_alerts, index)
         except NoSuchElementException as ex:
@@ -65,8 +63,12 @@ class Scraper:
         return index < 35
 
     @staticmethod
-    def get_alerts_equal_or_greater_than_current_index(min_index: int):
-        alerts = list(db["alerts"].find({"index": {"$gt": min_index - 1}}).limit(0))
+    def get_alerts_for_notification(min_index: int):
+        queries = [
+            {"index": {"$gt": min_index - 1}},
+            {"have_actioned": False},
+        ]
+        alerts = list(db["alerts"].find({"$and": queries}).limit(0))
         for alert in alerts:
             if alert["created_by"]:
                 alert["created_by"] = db["users"].find_one(
