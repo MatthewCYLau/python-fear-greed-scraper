@@ -49,7 +49,8 @@ class Scraper:
                     logging.info("Saving record for index: %s", index)
                     record.save_to_database()
             triggered_alerts = self.get_alerts_for_notification(int(index))
-            [self.create_event(i) for i in triggered_alerts]
+            for i in triggered_alerts:
+                self.create_event(i)
             self.generate_emails(triggered_alerts, index)
         except NoSuchElementException as ex:
             self.fail(ex.msg)
