@@ -45,6 +45,13 @@ def plot_stocks_charts(stocks: str = "", cumulative_returns: bool = False):
         predictions = lm.predict(x.values.astype(float).reshape(-1, 1))
         plt.plot(x, predictions, label="Linear fit", lw=3, color="red")
 
+        ticker = tickers_list[0]
+        rolling_avg = data[ticker].rolling(window=100).mean()
+        current_price = data[ticker].iloc[-1]
+        current_rolling_avg = rolling_avg.iloc[-1]
+        print(f"{ticker} current price: {current_price:.2f}")
+        print(f"{ticker} current 100-day rolling average: {current_rolling_avg:.2f}")
+
     plt.legend()
     plt.title("Stock Charts Plot", fontsize=16)
 
