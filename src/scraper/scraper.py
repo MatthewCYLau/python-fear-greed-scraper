@@ -93,13 +93,15 @@ class Scraper:
             if not isinstance(i["created_by"], dict):
                 logging.warning("Alert does not contain user email")
                 continue
-            to_email_address = i["created_by"]["email"]
+            alert_created_by = i["created_by"]
+            to_email_address = alert_created_by["email"]
             note = i["note"]
-            increase_amount = i["created_by"]["regularContributionAmount"] * (
+            increase_amount = alert_created_by["regularContributionAmount"] * (
                 (i["index"] - int(index)) / 100
             )
+            currency = alert_created_by.get("currency", "GBP")
             increased_contribution = f"{increase_amount:.2f}"
-            message = f"Fear and greed index is: {index}\n{note}\nIncrease contribution by {increased_contribution}"
+            message = f"Fear and greed index is: {index}\n{note}\nIncrease contribution by {increased_contribution}{currency}"
             send_email(to_email_address, message)
             emails_sent_count += 1
         logging.info("Email notification sent to %s emails", emails_sent_count)
