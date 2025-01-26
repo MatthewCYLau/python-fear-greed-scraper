@@ -2,8 +2,17 @@ resource "google_storage_bucket" "this" {
   name          = var.bucket_name
   location      = "EUROPE-WEST2"
   storage_class = "STANDARD"
+  force_destroy = true
   labels = {
     app = var.application_name
+  }
+  lifecycle_rule {
+    condition {
+      age = 30
+    }
+    action {
+      type = "Delete"
+    }
   }
 }
 
