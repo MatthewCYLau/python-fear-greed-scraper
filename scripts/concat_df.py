@@ -3,6 +3,10 @@ import pandas as pd
 import yfinance as yf
 
 
+def double_value(n):
+    return n * 2
+
+
 @arg("--stocks", default="")
 def concat_dfs(stocks: str = ""):
 
@@ -20,6 +24,7 @@ def concat_dfs(stocks: str = ""):
     df2 = df2[["Stock", "Close"]]
 
     concat_df = pd.concat([df1, df2])
+    concat_df["Double Close"] = concat_df["Close"].map(double_value)
 
     print(concat_df)
 
