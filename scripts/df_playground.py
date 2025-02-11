@@ -42,7 +42,7 @@ def generate_df(days: int, int_only: bool = False, chart_type: str = ""):
             plt.title("Histogram", fontsize=14)
             plt.ylabel("Count", fontsize=12)
 
-        elif chart_type == "pie":
+        elif chart_type == "pie" or chart_type == "bar":
             # Define bins (quantile-based)
             df["binned"] = pd.qcut(
                 df["Value"],
@@ -53,8 +53,16 @@ def generate_df(days: int, int_only: bool = False, chart_type: str = ""):
             bin_counts = df["binned"].value_counts()
             bin_proportions = bin_counts / bin_counts.sum()
 
-            # Create the pie chart
-            plt.pie(bin_proportions, labels=bin_proportions.index, autopct="%1.1f%%")
+            if chart_type == "pie":
+                plt.pie(
+                    bin_proportions, labels=bin_proportions.index, autopct="%1.1f%%"
+                )
+            elif chart_type == "bar":
+                plt.bar(
+                    ["Extreme fear", "Fear", "Neutral", "Greed", "Extreme greed"],
+                    bin_counts,
+                    label="Count",
+                )
             plt.title("Distribution of Values by Quantile")
 
         else:
