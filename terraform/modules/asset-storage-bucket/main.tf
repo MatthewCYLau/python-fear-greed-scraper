@@ -43,3 +43,8 @@ resource "google_storage_bucket_iam_policy" "this" {
   bucket      = google_storage_bucket.this.name
   policy_data = data.google_iam_policy.this.policy_data
 }
+
+output storage_bucket_name {
+  value       = google_storage_bucket.this.name
+  description = "Storage bucket name"
+}
