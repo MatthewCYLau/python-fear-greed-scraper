@@ -25,6 +25,6 @@ resource "null_resource" "echo_bucket_names" {
     always_run = timestamp()
   }
   provisioner "local-exec" {
-    command = "sh echo '${module.asset_storage_bucket[each.value.name].storage_bucket_name}'"
+    command = "echo 'Storage bucket name: ${module.asset_storage_bucket[each.value.name].storage_bucket_name}'"
   }
 }
