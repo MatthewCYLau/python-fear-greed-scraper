@@ -56,6 +56,34 @@ resource "google_monitoring_dashboard" "dashboard" {
         "width": 6,
         "xPos": 0,
         "yPos": 0
+      },
+      {
+        "height": 4,
+        "width": 6,
+        "xPos": 6,
+        "yPos": 0,
+        "widget": {
+          "title": "Cloud Run HTTP requests",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "sum by (\"response_code_class\")(rate({\"__name__\"=\"run.googleapis.com/request_count\",\"monitored_resource\"=\"cloud_run_revision\",\"location\"=\"europe-west1\",\"project_id\"=\"open-source-apps-001\",\"service_name\"=\"python-fear-greed-api\"}[1h]))"
+                },
+                "plotType": "LINE",
+                "targetAxis": "Y1"
+              }
+            ],
+            "chartOptions": {
+              "mode": "COLOR",
+              "displayHorizontal": false
+            },
+            "thresholds": [],
+            "yAxis": {
+              "scale": "LINEAR"
+            }
+          }
+        }
       }
     ]
   }
