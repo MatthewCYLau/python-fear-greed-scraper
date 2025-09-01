@@ -1,3 +1,10 @@
+resource "google_logging_project_bucket_config" "default" {
+  project        = var.project
+  location       = "global"
+  retention_days = 14
+  bucket_id      = "_Default"
+}
+
 resource "google_logging_metric" "pub_sub_message_received" {
   name   = "python-fear-greed-api/pub-sub-message-received"
   filter = <<EOT
