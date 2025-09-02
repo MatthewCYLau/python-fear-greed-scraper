@@ -97,3 +97,12 @@ resource "google_monitoring_dashboard" "dashboard" {
 }
 EOF
 }
+
+resource "google_monitoring_notification_channel" "me" {
+  display_name = "Email notification channel"
+  type         = "email"
+  labels = {
+    email_address = "lau.cy.matthew@gmail.com"
+  }
+  force_delete = false
+}
