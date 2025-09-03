@@ -122,9 +122,14 @@ resource "google_monitoring_alert_policy" "cloud_pub_sub" {
   metric.type = "logging.googleapis.com/user/${google_logging_metric.pub_sub_message_received.name}"
   resource.type = "cloud_run_revision"
   EOT
-      threshold_value = "2"
+      threshold_value = "10"
       trigger {
         count = "1"
+      }
+      aggregations {
+        alignment_period   = "300s"
+        group_by_fields    = []
+        per_series_aligner = "ALIGN_COUNT"
       }
     }
   }
