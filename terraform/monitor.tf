@@ -106,3 +106,33 @@ resource "google_monitoring_notification_channel" "me" {
   }
   force_delete = false
 }
+
+resource "google_monitoring_alert_policy" "cloud_pub_sub" {
+  display_name = "Cloud Pub Sub message"
+  documentation {
+    content = "The $${metric.display_name} metrics of the $${resource.type} $${resource.label.service_name} triggered."
+  }
+  combiner     = "AND"
+  conditions {
+    display_name = "Received Pub Sub message"
+    condition_threshold {
+      comparison      = "COMPARISON_GT"
+      duration        = "60s"
+      filter          = <<EOT
+      resource.type = "cloud_run_revision"
+      resource.labels.service_name = "python-fear-greed-api"
+      resource.labels.location = "${var.region}"
+      textPayload: "Received Pub Sub message"
+      EOT
+      threshold_value = "2"
+      trigger {
+        count = "1"
+      }
+    }
+  }
+  notification_channels = [google_monitoring_notification_channel.me.name]
+
+  user_labels = {
+    severity = "info"
+  }
+}
