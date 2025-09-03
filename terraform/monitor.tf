@@ -112,18 +112,16 @@ resource "google_monitoring_alert_policy" "cloud_pub_sub" {
   documentation {
     content = "The $${metric.display_name} metrics of the $${resource.type} $${resource.label.service_name} triggered."
   }
-  combiner     = "AND"
+  combiner = "AND"
   conditions {
     display_name = "Received Pub Sub message"
     condition_threshold {
       comparison      = "COMPARISON_GT"
       duration        = "60s"
       filter          = <<EOT
-      resource.type = "cloud_run_revision"
-      resource.labels.service_name = "python-fear-greed-api"
-      resource.labels.location = "${var.region}"
-      textPayload: "Received Pub Sub message"
-      EOT
+  metric.type = "logging.googleapis.com/user/${google_logging_metric.pub_sub_message_received.name}"
+  resource.type = "cloud_run_revision"
+  EOT
       threshold_value = "2"
       trigger {
         count = "1"
