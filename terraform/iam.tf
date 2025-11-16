@@ -19,9 +19,9 @@ resource "google_project_iam_member" "analysis_job_pubsub_subscribe" {
   role    = "roles/pubsub.subscriber"
   member  = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
   condition {
-    title       = "resource_name_equals_analysis_jobs_sucscription"
-    description = "Resource name equals ${google_pubsub_subscription.analysis_jobs.name}"
-    expression  = "resource.name == 'projects/${var.project}/subscriptions/${google_pubsub_subscription.analysis_jobs.name}'"
+    title       = "resource_name_equals_analysis_jobs_subscription_or_orders_subscription"
+    description = "Resource name equals ${google_pubsub_subscription.analysis_jobs.name} or ${google_pubsub_subscription.order.name}"
+    expression  = "resource.name == 'projects/${var.project}/subscriptions/${google_pubsub_subscription.analysis_jobs.name}' || resource.name == 'projects/${var.project}/subscriptions/${google_pubsub_subscription.order.name}'"
   }
 }
 
