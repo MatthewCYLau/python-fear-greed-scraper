@@ -20,3 +20,25 @@ resource "google_cloud_scheduler_job" "python-scraper" {
     }
   }
 }
+
+resource "google_cloud_scheduler_job" "match_orders" {
+  name             = "${var.application_name}-match-orders"
+  description      = "${var.application_name} match orders"
+  schedule         = "*/5 * * * *"
+  attempt_deadline = "320s"
+  region           = var.region
+  project          = var.project
+
+  retry_config {
+    retry_count = 3
+  }
+
+  http_target {
+    http_method = "POST"
+    uri         = "${data.google_cloud_run_v2_service.api.uri}/api/orders/match"
+
+    oidc_token {
+      service_account_email = google_service_account.cloud_run_invoker.email
+    }
+  }
+}
