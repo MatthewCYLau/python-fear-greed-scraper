@@ -24,7 +24,7 @@ resource "google_cloud_scheduler_job" "python-scraper" {
 resource "google_cloud_scheduler_job" "match_orders" {
   name             = "${var.application_name}-match-orders"
   description      = "${var.application_name} match orders"
-  schedule         = "*/5 * * * *"
+  schedule         = "0 * * * *"
   attempt_deadline = "320s"
   region           = var.region
   project          = var.project
