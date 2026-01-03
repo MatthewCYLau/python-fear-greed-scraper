@@ -36,17 +36,6 @@ resource "google_project_iam_member" "orders_pubsub_subscribe" {
   }
 }
 
-resource "google_project_iam_member" "trades_pubsub_subscribe" {
-  project = var.project
-  role    = "roles/pubsub.subscriber"
-  member  = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
-  condition {
-    title       = "resource_name_equals_trades_subscription"
-    description = "Resource name equals ${google_pubsub_subscription.trade.name}"
-    expression  = "resource.name == 'projects/${var.project}/subscriptions/${google_pubsub_subscription.trade.name}'"
-  }
-}
-
 resource "google_project_iam_member" "analysis_job_pubsub_publish" {
   project = var.project
   role    = "roles/pubsub.publisher"

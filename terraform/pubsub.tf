@@ -123,38 +123,15 @@ resource "google_pubsub_schema" "order" {
   )
 }
 
-resource "google_pubsub_topic" "trades" {
-  name = "trades-topic"
-  schema_settings {
-    schema   = "projects/${var.project}/schemas/${google_pubsub_schema.trade.name}"
-    encoding = "JSON"
-  }
-  labels = local.labels
-}
-
-resource "google_pubsub_subscription" "trade" {
-  name                       = "trades-subscription"
-  topic                      = google_pubsub_topic.trades.name
-  ack_deadline_seconds       = 20
-  message_retention_duration = "1200s" # 20 minutes
-  retain_acked_messages      = true
-
-  push_config {
-    push_endpoint = "${data.google_cloud_run_v2_service.api.uri}/api/trades-subscription-push"
-    oidc_token {
-      service_account_email = google_service_account.pubsub_invoker.email
-    }
-    attributes = {
-      x-goog-version = "v1"
-    }
-  }
-  labels = local.labels
-}
-
-resource "google_pubsub_schema" "trade" {
-  name = "trade"
-  type = "AVRO"
-  definition = jsonencode({
+module "trades_pubsub" {
+  source                     = "./modules/pubsub"
+  name                       = "trades"
+  project                    = var.project
+  cloud_run_runtime_sa_email = google_service_account.cloud_run_runtime.email
+  pubsub_invoker_sa_email    = google_service_account.pubsub_invoker.email
+  labels                     = local.labels
+  subscription_push_endpoint = "${data.google_cloud_run_v2_service.api.uri}/api/trades-subscription-push"
+  schema = {
     "type" : "record",
     "name" : "Avro",
     "fields" : [
@@ -184,6 +161,5 @@ resource "google_pubsub_schema" "trade" {
         "default" : 0
       }
     ]
-    }
-  )
+  }
 }
