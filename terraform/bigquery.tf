@@ -16,7 +16,7 @@ resource "google_bigquery_table" "records" {
   schema = <<EOF
 [
   {"name": "created", "type": "TIMESTAMP", "mode": "REQUIRED"},
-  {"name": "index", "type": "INTEGER", "mode": "REQUIRED"}
+  {"name": "fear_greed_index", "type": "INTEGER", "mode": "REQUIRED"}
 ]
 EOF
 }
