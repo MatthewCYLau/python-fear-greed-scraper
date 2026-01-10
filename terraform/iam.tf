@@ -87,8 +87,8 @@ resource "google_project_iam_member" "github_action_sa" {
   member  = "serviceAccount:github-actions-service-account@open-source-apps-001.iam.gserviceaccount.com"
 }
 
-resource "google_bigquery_dataset_iam_member" "owner" {
-  dataset_id = google_bigquery_dataset.records.dataset_id
-  role       = "roles/bigquery.dataOwner"
-  member     = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
+resource "google_project_iam_member" "bigquery_admin" {
+  project = var.project
+  role    = "roles/bigquery.admin"
+  member  = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
 }
