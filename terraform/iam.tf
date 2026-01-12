@@ -36,11 +36,13 @@ resource "google_project_iam_member" "orders_pubsub_subscribe" {
   }
 }
 
-resource "google_project_iam_member" "analysis_job_pubsub_publish" {
+resource "google_project_iam_member" "cloud_run_runtime_roles" {
+  for_each = toset([
+    "roles/pubsub.publisher",
+  ])
   project = var.project
-  role    = "roles/pubsub.publisher"
+  role    = each.key
   member  = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
-
 }
 
 resource "google_service_account" "pubsub_invoker" {
