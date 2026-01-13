@@ -96,7 +96,7 @@ resource "google_project_iam_member" "bigquery_job_user" {
 }
 
 resource "google_bigquery_dataset_iam_member" "dataset_editor" {
-  dataset_id = google_bigquery_dataset.records.dataset_id
+  dataset_id = google_bigquery_dataset.this.dataset_id
   role       = "roles/bigquery.dataEditor"
   member     = "serviceAccount:${google_service_account.cloud_run_runtime.email}"
 }
