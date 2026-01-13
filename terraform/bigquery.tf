@@ -11,11 +11,11 @@ resource "google_bigquery_dataset" "this" {
 resource "google_bigquery_table" "records" {
   dataset_id          = google_bigquery_dataset.this.dataset_id
   table_id            = "fear_greed_records"
-  deletion_protection = false # Set to true for production
+  deletion_protection = false
 
   schema = <<EOF
 [
-  {"name": "created", "type": "TIMESTAMP", "mode": "REQUIRED"},
+  {"name": "created", "type": "DATETIME", "mode": "REQUIRED"},
   {"name": "fear_greed_index", "type": "INTEGER", "mode": "REQUIRED"}
 ]
 EOF
@@ -24,7 +24,7 @@ EOF
 resource "google_bigquery_table" "orders" {
   dataset_id          = google_bigquery_dataset.this.dataset_id
   table_id            = "stock_trade_orders"
-  deletion_protection = false # Set to true for production
+  deletion_protection = false
   schema = <<EOF
 [
   {"name": "created", "type": "DATETIME", "mode": "REQUIRED"},
