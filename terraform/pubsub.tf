@@ -86,6 +86,24 @@ resource "google_pubsub_subscription" "order" {
   labels = local.labels
 }
 
+resource "google_pubsub_subscription" "order_request" {
+  name                       = "orders-request-subscription"
+  topic                      = google_pubsub_topic.orders.name
+  ack_deadline_seconds       = 20
+  message_retention_duration = "1200s" # 20 minutes
+  retain_acked_messages      = true
+
+  bigquery_config {
+    table            = "${var.project}:${google_bigquery_dataset.this.dataset_id}.${google_bigquery_table.orders_request.table_id}"
+    use_topic_schema = true
+  }
+
+  # Ensure the Pub/Sub service account has permission to write to BQ
+  depends_on = [google_bigquery_table.orders_request]
+
+  labels = local.labels
+}
+
 resource "google_pubsub_schema" "order" {
   name = "order"
   type = "AVRO"
