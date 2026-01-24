@@ -99,7 +99,7 @@ resource "google_pubsub_subscription" "order_request" {
   }
 
   # Ensure the Pub/Sub service account has permission to write to BQ
-  depends_on = [google_bigquery_table.orders_request]
+  depends_on = [google_bigquery_table.orders_request, google_bigquery_dataset_iam_member.pubsub_service_agent_dataset_editor]
 
   labels = local.labels
 }
