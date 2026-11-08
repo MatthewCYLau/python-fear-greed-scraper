@@ -213,7 +213,7 @@ resource "google_monitoring_dashboard" "dashboard" {
                 },
                 "plotType": "STACKED_BAR",
                 "targetAxis": "Y1",
-                "legendTemplate": "State: ${metric.label.state}"
+                "legendTemplate": "Instance Count"
               }
             ],
             "yAxis": {
